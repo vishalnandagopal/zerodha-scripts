@@ -1,5 +1,5 @@
 from csv import reader
-from os import listdir, path
+from os import path
 from os.path import dirname
 from pathlib import Path
 
@@ -85,7 +85,7 @@ class Ticker:
             self.net_profit = 0
             raise RuntimeError(
                 redify(
-                    "Net profit is being calculated when net qt for {self.ticker} is not 0. Check again!"
+                    f"Net profit is being calculated when net qt for {self.ticker} is not 0. Check again!"
                 )
             )
         return self.net_profit

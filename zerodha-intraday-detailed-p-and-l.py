@@ -6,6 +6,18 @@ from pathlib import Path
 from colorama import Fore
 
 
+def redify(string: str) -> str:
+    return f"{Fore.RED}{string}{Fore.RESET}"
+
+
+def greenify(string: str) -> str:
+    return f"{Fore.GREEN}{string}{Fore.RESET}"
+
+
+def yellowify(string: str) -> str:
+    return f"{Fore.YELLOW}{string}{Fore.RESET}"
+
+
 class Ticker:
     def __init__(self, ticker: str):
         self.ticker: str = ticker
@@ -72,22 +84,20 @@ class Ticker:
         else:
             self.net_profit = 0
             raise RuntimeError(
-                f"Net profit is being calculated when net qt for {self.ticker} is not 0. Check again!"
+                redify(
+                    "Net profit is being calculated when net qt for {self.ticker} is not 0. Check again!"
+                )
             )
         return self.net_profit
 
     def get_colored_string(price) -> str:
         price = round(price, 2)
-        return (
-            f"{Fore.GREEN}+{price}{Fore.RESET}"
-            if price > 0
-            else f"{Fore.RED}{price}{Fore.RESET}"
-        )
+        return greenify(f"+{price}") if price > 0 else redify(price)
 
     def get_profit_or_loss_string(self) -> str:
         profit_or_loss_string = Ticker.get_colored_string(self.net_profit)
         turnover = self.buy_price + self.sell_price
-        return f"\n{Fore.YELLOW}{ticker}{Fore.RESET}\n    Net P&L : {profit_or_loss_string}\n    Turnover: {turnover}\n    ~20%: {round((turnover/all_tickers[ticker].total_transactions)* 0.2)}"
+        return f"\n{yellowify(ticker)}\n    Net P&L : {profit_or_loss_string}\n    Turnover: {turnover}\n    ~20%: {round((turnover/all_tickers[ticker].total_transactions)* 0.2)}"
 
 
 all_tickers: dict[str, Ticker] = dict()
